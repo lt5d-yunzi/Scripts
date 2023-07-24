@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minecraft Log Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        // 初始化默认的连接地址
+        var serverAddress = "http://0.0.0.0:8080";
+        const socket = io(serverAddress);
+
+        socket.on('connect', function() {
+            console.log('Connected to server.');
+        });
+
+        socket.on('log_update', function(data) {
+            document.getElementById('logData').innerHTML = data.log_data;
+            scrollToBottom(); // Scroll to the bottom of the log when new data is received
+        });
+
+        // Function to scroll to the bottom of the log div
+        function scrollToBottom() {
+            var logDiv = document.getElementById('logData');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+    </script>
+</head>
+<style>
+    body {
+        background-color: #222222; /* 灰色背景颜色 */
+    }
+    /* 添加其他CSS样式，如果需要 */
+
+    /* 确保logData元素有滚动条 */
+    #logData {
+        overflow-y: auto;
+        max-height: 500px; /* 如果需要，设置一个最大高度来限制滚动区域 */
+        color: #FFFFFF;
+        font-size: 35px;
+    }
+
+    /* 浮窗样式 */
+    .floating-panel {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        background-color: #555555;
+        padding: 10px;
+        border-radius: 5px;
+        display: none; /* 初始时隐藏 */
+        z-index: 9999;
+    }
+
+    .floating-panel.show {
+        display: block; /* 显示浮窗 */
+    }
+</style>
+<body>
+    <h1 style="color: #FFFFFF">Minecraft Log Viewer</h1>
+    <div id="logData">
+        Log信息加载中，请稍候...
+    </div>
+
+    <!-- 浮窗选项 -->
+    <div id="floating_panel" class="floating-panel">
+        <h4>浮窗选项</h4>
+        <label for="socks_ip">SOCKS IP:</label>
+        <input type="text" id="socks_ip" placeholder="IP地址">
+        <label for="socks_port">端口:</label>
+        <input type="text" id="socks_port" placeholder="端口号">
+        <br>
+        <button onclick="saveSettings()">保存设置</button>
+        <button onclick="toggleFloatingPanel()">隐藏浮窗</button>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+
+    <button onclick="toggleFloatingPanel()">显示浮窗选项</button>
+
+    <script>
+        // 显示/隐藏浮窗的函数
+        function toggleFloatingPanel() {
+            var floatingPanel = document.getElementById('floating_panel');
+            if (floatingPanel.style.display === 'block') {
+                floatingPanel.style.display = 'none';
+            } else {
+                floatingPanel.style.display = 'block';
+                loadSettings(); // 加载设置
+            }
+        }
+
+        // 清空日志的函数
+        function clearLog() {
+            socket.emit('clear_log', {});
+        }
+
+        // 保存设置的函数
+        function saveSettings() {
+            var socksIp = document.getElementById('socks_ip').value;
+            var socksPort = document.getElementById('socks_port').value;
+            // 更新连接地址
+            serverAddress = "http://" + socksIp + ":" + socksPort;
+            socket.disconnect();
+            socket.connect(serverAddress);
+            alert('设置已保存！');
+        }
+    </script>
+</body>
+</html>
+
