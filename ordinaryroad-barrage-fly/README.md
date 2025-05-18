@@ -16,5 +16,6 @@
 - 启动程序：
 ```
 #可以连接多个平台
+#示例↓↓↓↓
 python .\ttsclient.py -t [任务id] -t  [任务id] -t  [任务id] --enable-tts --rate [语速]
 ```
