@@ -1,10 +1,7 @@
 # 一些脚本文件
 # remove_obsworks_plugins.bat
 彻底删除obs studio插件中心
-# MC_Web_Logs_Chat_Only.py (源码)
-我的世界读取本地logs文件在网页上展示（规避b站直播必须遮挡游戏聊天框）
-注：此脚本有bug，只能一个浏览器访问
-# MC_Web_Logs_Chat_Only.exe（可执行文件）
-同上
-# MC_Web_Chat_flack_ver (源码，2个文件需要配合使用)
-用flack重写的 我的世界读取本地logs文件在网页上展示（规避b站直播必须遮挡游戏聊天框）
+#MC_Web_Logs_Chat_Only_poject
+从文件中获取mine craft游戏内聊天内容 防止因为露出聊天内容被B站强行关闭直播
+#ordinaryroad-barrage-fly
+基于ordinaryroad-barrage-fly的一些脚本
